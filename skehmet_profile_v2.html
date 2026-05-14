@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SKEHMET — KAIJU PROFILE</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@400;600;700&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #D4A017;
+    --gold-light: #F0C040;
+    --gold-dark: #8B6914;
+    --black: #0A0A0A;
+    --dark: #111111;
+    --dark-mid: #1A1A1A;
+    --white-atomic: #F0F0E8;
+    --blue-royal: #1A2B4A;
+    --red-gem: #8B1A1A;
+    --solar-white: #FFFEF0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--black);
+    color: var(--white-atomic);
+    font-family: 'Rajdhani', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .bg-texture {
+    position: fixed;
+    inset: 0;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(212,160,23,0.015) 2px, rgba(212,160,23,0.015) 4px),
+      radial-gradient(ellipse at 50% 0%, rgba(212,160,23,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 50% 100%, rgba(26,43,74,0.4) 0%, transparent 60%),
+      var(--black);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  /* LANGUAGE TABS */
+  .lang-tabs {
+    display: flex;
+    border-bottom: 1px solid rgba(212,160,23,0.2);
+    margin-bottom: 24px;
+  }
+
+  .lang-tab {
+    font-family: 'Oswald', sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    padding: 10px 20px;
+    cursor: pointer;
+    color: rgba(240,240,232,0.4);
+    text-transform: uppercase;
+    border: none;
+    border-bottom: 2px solid transparent;
+    background: none;
+    margin-bottom: -1px;
+    transition: all 0.2s;
+  }
+
+  .lang-tab.active {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+  }
+
+  .lang-content { display: none; }
+  .lang-content.active { display: block; }
+
+  /* HEADER */
+  .header {
+    text-align: center;
+    padding: 40px 20px 20px;
+    position: relative;
+  }
+
+  .header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 2px; height: 40px;
+    background: linear-gradient(to bottom, transparent, var(--gold));
+  }
+
+  .era-tag {
+    font-family: 'Oswald', sans-serif;
+    font-size: 11px;
+    letter-spacing: 6px;
+    color: var(--gold);
+    opacity: 0.8;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .main-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(72px, 12vw, 120px);
+    letter-spacing: 12px;
+    line-height: 0.9;
+    background: linear-gradient(180deg, var(--solar-white) 0%, var(--gold-light) 40%, var(--gold) 70%, var(--gold-dark) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    font-family: 'Oswald', sans-serif;
+    font-size: 13px;
+    letter-spacing: 8px;
+    color: var(--white-atomic);
+    opacity: 0.5;
+    margin-top: 8px;
+    text-transform: uppercase;
+  }
+
+  .header-divider {
+    margin: 24px auto;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), var(--gold-light), var(--gold), transparent);
+    position: relative;
+  }
+
+  .header-divider::after {
+    content: '◆';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--gold);
+    font-size: 10px;
+    background: var(--black);
+    padding: 0 8px;
+  }
+
+  /* CLASSIFICATION BAR */
+  .classification-bar {
+    display: flex;
+    border: 1px solid rgba(212,160,23,0.3);
+    margin-bottom: 32px;
+    overflow: hidden;
+  }
+
+  .class-item {
+    flex: 1;
+    padding: 10px 16px;
+    text-align: center;
+    border-right: 1px solid rgba(212,160,23,0.2);
+    background: rgba(212,160,23,0.04);
+  }
+
+  .class-item:last-child { border-right: none; }
+
+  .class-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    opacity: 0.7;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .class-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 2px;
+    color: var(--white-atomic);
+  }
+
+  .threat-red { color: #CC3333; }
+
+  /* GRID */
+  .main-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin-bottom: 2px;
+  }
+
+  .block {
+    background: rgba(212,160,23,0.03);
+    border: 1px solid rgba(212,160,23,0.15);
+    padding: 22px;
+    animation: fadeIn 0.6s ease forwards;
+  }
+
+  .block-full { grid-column: 1 / -1; }
+
+  .block-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 6px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(212,160,23,0.2);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .block-title::before {
+    content: '';
+    width: 3px;
+    height: 14px;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+
+  /* PROSE */
+  .prose {
+    font-size: 13px;
+    line-height: 1.85;
+    color: rgba(240,240,232,0.72);
+    font-weight: 500;
+  }
+
+  .prose + .prose { margin-top: 10px; }
+
+  /* STAT ROWS */
+  .stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(212,160,23,0.07);
+  }
+
+  .stat-row:last-child { border-bottom: none; }
+
+  .stat-key {
+    font-family: 'Oswald', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    opacity: 0.7;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  .stat-val {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--white-atomic);
+    text-align: right;
+    max-width: 62%;
+  }
+
+  /* ABILITY CARDS */
+  .ability-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .ability-card {
+    background: rgba(212,160,23,0.05);
+    border: 1px solid rgba(212,160,23,0.2);
+    border-left: 3px solid var(--gold);
+    padding: 12px 14px;
+  }
+
+  .ability-card.unique {
+    border-left-color: var(--solar-white);
+    background: rgba(255,254,240,0.03);
+  }
+
+  .ability-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 15px;
+    letter-spacing: 2px;
+    color: var(--gold-light);
+    margin-bottom: 5px;
+  }
+
+  .ability-card.unique .ability-name { color: var(--solar-white); }
+
+  .ability-desc {
+    font-size: 12px;
+    line-height: 1.6;
+    color: rgba(240,240,232,0.62);
+    font-weight: 500;
+  }
+
+  /* TAGS */
+  .tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+
+  .tag {
+    font-family: 'Oswald', sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    padding: 4px 10px;
+    border: 1px solid rgba(212,160,23,0.3);
+    color: var(--gold-light);
+    text-transform: uppercase;
+    background: rgba(212,160,23,0.05);
+  }
+
+  /* VOICE */
+  .voice-block {
+    background: rgba(26,43,74,0.3);
+    border-left: 3px solid var(--blue-royal);
+    padding: 12px 16px;
+    margin-top: 8px;
+    font-style: italic;
+    font-size: 13px;
+    line-height: 1.7;
+    color: rgba(240,240,232,0.78);
+  }
+
+  /* POWER BARS */
+  .power-bar-wrap { margin: 8px 0; }
+
+  .power-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+  }
+
+  .power-name {
+    font-family: 'Oswald', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    opacity: 0.8;
+    text-transform: uppercase;
+  }
+
+  .power-tier {
+    font-size: 11px;
+    color: rgba(240,240,232,0.5);
+    font-weight: 600;
+  }
+
+  .power-bar {
+    height: 4px;
+    background: rgba(212,160,23,0.1);
+    overflow: hidden;
+  }
+
+  .power-fill {
+    height: 100%;
+    background: linear-gradient(to right, var(--gold-dark), var(--gold), var(--gold-light));
+    animation: fillBar 1.5s ease forwards;
+  }
+
+  .power-fill.white {
+    background: linear-gradient(to right, rgba(255,254,240,0.3), var(--solar-white));
+  }
+
+  @keyframes fillBar { from { width: 0; } }
+
+  /* WARNING */
+  .warning-block {
+    background: rgba(139,26,26,0.08);
+    border: 1px solid rgba(139,26,26,0.25);
+    border-left: 3px solid var(--red-gem);
+    padding: 12px 14px;
+    margin-bottom: 8px;
+  }
+
+  .warning-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #CC4444;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+
+  /* ENCOUNTER */
+  .encounter {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(212,160,23,0.08);
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .encounter:last-child { border-bottom: none; }
+
+  .enc-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--gold-dark);
+    opacity: 0.5;
+    min-width: 36px;
+    line-height: 1;
+    padding-top: 2px;
+  }
+
+  /* QUOTE */
+  .psych-quote {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 3px;
+    color: rgba(212,160,23,0.25);
+    text-align: center;
+    padding: 18px 0 4px;
+    line-height: 1.4;
+  }
+
+  /* GLOW */
+  .glow-line {
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold-light), transparent);
+    margin: 2px 0;
+    animation: pulse 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    padding: 32px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: rgba(212,160,23,0.3);
+    text-transform: uppercase;
+    border-top: 1px solid rgba(212,160,23,0.1);
+    margin-top: 2px;
+  }
+
+  .akrd-stamp {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 8px;
+    color: rgba(212,160,23,0.07);
+    margin-top: 8px;
+  }
+
+  @media (max-width: 640px) {
+    .main-grid { grid-template-columns: 1fr; }
+    .ability-grid { grid-template-columns: 1fr; }
+    .classification-bar { flex-wrap: wrap; }
+    .class-item { min-width: 50%; border-bottom: 1px solid rgba(212,160,23,0.15); }
+  }
+</style>
+</head>
+<body>
+<div class="bg-texture"></div>
+<div class="container">
+
+  <div class="lang-tabs">
+    <button class="lang-tab active" onclick="switchLang('en', this)">🇺🇸 ENGLISH</button>
+    <button class="lang-tab" onclick="switchLang('pt', this)">🇧🇷 PORTUGUÊS</button>
+    <button class="lang-tab" onclick="switchLang('es', this)">🇪🇸 ESPAÑOL</button>
+  </div>
+
+  <!-- ════════════════ ENGLISH ════════════════ -->
+  <div class="lang-content active" id="lang-en">
+
+    <div class="header">
+      <div class="era-tag">AKRD — Kaiju Girl Profile — Millennium Continuity</div>
+      <div class="main-title">SKEHMET</div>
+      <div class="subtitle">The Lioness of the Sun &nbsp;·&nbsp; Kaiju Girl of Godzilla Final Wars</div>
+      <div class="header-divider"></div>
+    </div>
+
+    <div class="classification-bar">
+      <div class="class-item"><span class="class-label">Field ID</span><span class="class-value">AKRD-KG-0017</span></div>
+      <div class="class-item"><span class="class-label">Height</span><span class="class-value">90–110 M</span></div>
+      <div class="class-item"><span class="class-label">Mass</span><span class="class-value">~60,000 T</span></div>
+      <div class="class-item"><span class="class-label">Threat Level</span><span class="class-value threat-red">RED — HIGH</span></div>
+      <div class="class-item"><span class="class-label">Status</span><span class="class-value">UNCONTAINED</span></div>
+    </div>
+
+    <div class="main-grid">
+
+      <!-- BIOLOGY -->
+      <div class="block">
+        <div class="block-title">Biology & Morphology</div>
+        <div class="stat-row"><span class="stat-key">Origin</span><span class="stat-val">Deep-ocean thermal vents, pre-human era</span></div>
+        <div class="stat-row"><span class="stat-key">First Awakening</span><span class="stat-val">1954 — nuclear testing resonance</span></div>
+        <div class="stat-row"><span class="stat-key">Containment</span><span class="stat-val">Area G, Antarctica (196X – 20XX)</span></div>
+        <div class="stat-row"><span class="stat-key">Dorsal Plates</span><span class="stat-val">White-grey, jagged — Final Wars type</span></div>
+        <div class="stat-row"><span class="stat-key">Tail</span><span class="stat-val">Black, spiked — primary weapon</span></div>
+        <div class="stat-row"><span class="stat-key">Eyes</span><span class="stat-val">Amber-gold, high intensity</span></div>
+        <div class="stat-row"><span class="stat-key">Facial Markings</span><span class="stat-val">Blue ritual war paint</span></div>
+        <div class="stat-row"><span class="stat-key">Alien Control</span><span class="stat-val">IMMUNE — zero Xilien compatibility</span></div>
+      </div>
+
+      <!-- PHYSIQUE -->
+      <div class="block">
+        <div class="block-title">Physique</div>
+        <div class="stat-row"><span class="stat-key">Build</span><span class="stat-val">Heavy athletic — power and endurance</span></div>
+        <div class="stat-row"><span class="stat-key">Abdominals</span><span class="stat-val">8-pack, deeply defined</span></div>
+        <div class="stat-row"><span class="stat-key">Primary Muscle Groups</span><span class="stat-val">Core, shoulders, upper arms, thighs</span></div>
+        <div class="stat-row"><span class="stat-key">Silhouette</span><span class="stat-val">Hourglass over heavy muscle frame</span></div>
+        <div class="stat-row"><span class="stat-key">Reference</span><span class="stat-val">Tifa Lockhart ratio / Erza Scarlet build</span></div>
+        <div class="stat-row"><span class="stat-key">Attire</span><span class="stat-val">Egyptian ceremonial war gear — solid gold</span></div>
+        <div class="stat-row"><span class="stat-key">Fang</span><span class="stat-val">Single lower tusk, visible at rest</span></div>
+      </div>
+
+      <!-- PERSONALITY -->
+      <div class="block block-full">
+        <div class="block-title">Personality</div>
+        <div class="tag-cloud">
+          <span class="tag">Sovereign</span>
+          <span class="tag">Ma'at — Order</span>
+          <span class="tag">Dual Nature</span>
+          <span class="tag">Compressed Aggression</span>
+          <span class="tag">Strategically Cold</span>
+          <span class="tag">Ancient Rancor</span>
+          <span class="tag">Capable of Forgiveness</span>
+          <span class="tag">No Need for Approval</span>
+        </div>
+        <p class="prose">Skehmet does not act out of cruelty, fear, or pride. She acts because she has <em>concluded</em>. Before striking, she watches. Before speaking, she weighs. Her sovereignty is not a title — it is a logic system she applies to everything around her, dividing the world into what disturbs the natural order and what restores it. She does not explain her judgments. They simply land.</p>
+        <p class="prose">Beneath the cold exterior live two forces in constant equilibrium: a rage that does not scream — it goes colder — and a restorative drive that leads her to protect what deserves protecting, without ceremony, without words. Both are equally real. Neither ever fully disappears.</p>
+        <div class="psych-quote">"A scale that does not hesitate. That punishes whatever tips it."</div>
+      </div>
+
+      <!-- PSYCHOLOGY -->
+      <div class="block block-full">
+        <div class="block-title">Psychology</div>
+        <p class="prose">Skehmet's sovereignty is not philosophy — it is armor. Centuries of solitary existence, decades of war, and a cryostasis that erased her conscious being have built a fortress of cold judgment around a wound she does not know she carries. She believes her decisions are purely rational. She cannot see that several of them — particularly her visceral response to any attempt at domination — are trauma responses dressed as verdicts.</p>
+        <p class="prose">She liberates controlled kaiju instinctively, reading it as the restoration of natural order. What she does not realize is that every liberation is, unconsciously, her own. A repetition of breaking free from the ice. She confirms her existence through the traces she leaves in the world — not because she chose to, but because the alternative is silence, and silence terrifies her in ways she cannot articulate.</p>
+        <div class="psych-quote">"A fortress built over a wound she does not know she has."</div>
+      </div>
+
+      <!-- INTELLIGENCE -->
+      <div class="block">
+        <div class="block-title">Intelligence</div>
+        <p class="prose" style="margin-bottom:12px;">Her intelligence operates on three distinct levels that rarely overlap. In combat, she reads structural weaknesses before the first exchange — not during. In social contexts, she detects intent with precision but never reveals that she has. Strategically, she identifies the root of a problem and removes it directly, without detours.</p>
+        <div class="stat-row"><span class="stat-key">Combat Read</span><span class="stat-val">Pre-engagement analysis — Vergil (DMC) level precision</span></div>
+        <div class="stat-row"><span class="stat-key">Social</span><span class="stat-val">Detects deception — never discloses the detection</span></div>
+        <div class="stat-row"><span class="stat-key">Strategic</span><span class="stat-val">Root-cause elimination — no ten-step plans</span></div>
+        <div class="stat-row"><span class="stat-key">Blind Spot</span><span class="stat-val">Complex human emotional motivations</span></div>
+        <div class="stat-row"><span class="stat-key">Multiverse</span><span class="stat-val">Senses it instinctively — does not theorize it</span></div>
+      </div>
+
+      <!-- TEMPERAMENT -->
+      <div class="block">
+        <div class="block-title">Temperament & Behavioral Tics</div>
+        <p class="prose" style="margin-bottom:12px;">Her default state is sovereign indifference — not hostility, not warmth. Most things simply do not reach her threshold. When that threshold is crossed, the shift from stillness to action is total and immediate, with no intermediate stage.</p>
+        <div class="stat-row"><span class="stat-key">Primary Trigger</span><span class="stat-val">Any attempt at domination or control</span></div>
+        <div class="stat-row"><span class="stat-key">Secondary Trigger</span><span class="stat-val">Kaiju under alien control — liberation reflex</span></div>
+        <div class="stat-row"><span class="stat-key">Humor</span><span class="stat-val">Devastating literalism — entirely unintentional</span></div>
+        <div class="stat-row"><span class="stat-key">Tic — Eyes</span><span class="stat-val">Prolonged fixed stare when reading a situation</span></div>
+        <div class="stat-row"><span class="stat-key">Tic — Tail</span><span class="stat-val">Single slow sweep — sole visible stress indicator</span></div>
+        <div class="stat-row"><span class="stat-key">Never</span><span class="stat-val">Repeats a warning. Raises her voice. Finishes the defeated.</span></div>
+      </div>
+
+      <!-- VOICE -->
+      <div class="block block-full">
+        <div class="block-title">Voice & Speech Pattern</div>
+        <p class="prose" style="margin-bottom:14px;">She speaks like a natural law that has temporarily taken form. Every sentence is a verdict already rendered — heavy with ancient weight, stripped of everything unnecessary. She uses the present tense for permanent truths. No conditionals, no hedging. Her silence before answering is not hesitation; it is precision. In combat, sentences compress to two or three words. The lower her voice, the more serious the situation.</p>
+        <div style="font-size:11px;font-family:'Oswald',sans-serif;letter-spacing:3px;color:rgba(212,160,23,0.5);text-transform:uppercase;margin-bottom:10px;">Reference: Raiden Shogun — calm &nbsp;/&nbsp; Kujou Sara — combat (Genshin Impact)</div>
+        <div class="voice-block">"This territory has been mine since before your birth. That has not changed."</div>
+        <div class="voice-block">"You already lost. You don't know it yet."</div>
+        <div class="voice-block">"You acted correctly. That is rare."</div>
+        <div class="voice-block">"They tried. They are no longer here to repeat it."</div>
+        <div class="voice-block" style="font-size:12px;opacity:0.65;">[Combat] "Too slow." &nbsp;·&nbsp; [On being underestimated] "..." — then demonstration. &nbsp;·&nbsp; [Rare humor, unaware] "I cannot say whether you will survive. I will."</div>
+      </div>
+
+      <!-- POWER LEVEL -->
+      <div class="block">
+        <div class="block-title">Power Classification</div>
+        <p class="prose" style="margin-bottom:14px;">Skehmet is not a cosmic entity. She is a planetary apex — a natural catastrophe given sovereign will. Her ceiling is reached only in the Keizer state, which she does not control.</p>
+        <div class="power-bar-wrap">
+          <div class="power-label"><span class="power-name">Baseline</span><span class="power-tier">Planetary</span></div>
+          <div class="power-bar"><div class="power-fill" style="width:72%"></div></div>
+        </div>
+        <div class="power-bar-wrap">
+          <div class="power-label"><span class="power-name">Solar Convergence</span><span class="power-tier">High Planetary</span></div>
+          <div class="power-bar"><div class="power-fill" style="width:83%"></div></div>
+        </div>
+        <div class="power-bar-wrap">
+          <div class="power-label"><span class="power-name">Keizer State</span><span class="power-tier">Stellar-Low — uncontrolled</span></div>
+          <div class="power-bar"><div class="power-fill white" style="width:95%"></div></div>
+        </div>
+      </div>
+
+      <!-- COMBAT -->
+      <div class="block">
+        <div class="block-title">Combat Style</div>
+        <p class="prose" style="margin-bottom:12px;">She does not fight to dominate. She fights to resolve. Every engagement is a problem with an optimal solution — she finds it, applies it, stops. Her Pankration-based style was absorbed over decades of observation and war, never formally taught. It is ancient, efficient, and brutal in its precision — not its excess.</p>
+        <div class="stat-row"><span class="stat-key">Base Style</span><span class="stat-val">Pankration Sovereign — ancient MMA hybrid</span></div>
+        <div class="stat-row"><span class="stat-key">Entry Protocol</span><span class="stat-val">3-sec structural read, then single decisive strike</span></div>
+        <div class="stat-row"><span class="stat-key">Adaptation</span><span class="stat-val">Grows stronger as the fight extends</span></div>
+        <div class="stat-row"><span class="stat-key">Primary Weapon</span><span class="stat-val">Tail — functions as a third arm, wildcard axis</span></div>
+        <div class="stat-row"><span class="stat-key">Brutality</span><span class="stat-val">None — precision replaces volume</span></div>
+      </div>
+
+      <!-- ABILITIES INHERITED -->
+      <div class="block block-full">
+        <div class="block-title">Abilities — Inherited from Homologue</div>
+        <div class="ability-grid">
+          <div class="ability-card">
+            <div class="ability-name">White Solar Atomic Breath</div>
+            <div class="ability-desc">Focused beam rather than a wide ray. Surgical at range. Output capable of structural annihilation along a concentrated line of fire.</div>
+          </div>
+          <div class="ability-card">
+            <div class="ability-name">Apex Durability</div>
+            <div class="ability-desc">Resistant to advanced ordnance and directed-energy strikes. Composite dermal and subdermal layers of unknown biological composition.</div>
+          </div>
+          <div class="ability-card">
+            <div class="ability-name">Accelerated Regeneration</div>
+            <div class="ability-desc">Recovery from catastrophic trauma within hours to days depending on severity. Conventional damage cannot achieve permanent containment.</div>
+          </div>
+          <div class="ability-card">
+            <div class="ability-name">Reactive Adaptation</div>
+            <div class="ability-desc">She measurably grows stronger throughout prolonged combat. The longer the fight, the more dangerous she becomes — consistent with her homologue.</div>
+          </div>
+          <div class="ability-card">
+            <div class="ability-name">Amphibious Mastery</div>
+            <div class="ability-desc">Equal combat efficiency on land and underwater. Deep-ocean thermal fields are her primary restoration and habitat zone.</div>
+          </div>
+          <div class="ability-card">
+            <div class="ability-name">Keizer-Analog State</div>
+            <div class="ability-desc">Triggered by external energy surges — ion storms, power-grid overloads, alien beam saturation. Atomic breath escalates to solar-white tier. Entirely uncontrolled.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ABILITIES UNIQUE -->
+      <div class="block block-full">
+        <div class="block-title">Abilities — Unique to Skehmet</div>
+        <div class="ability-grid">
+          <div class="ability-card unique">
+            <div class="ability-name">Ma'at Pulse</div>
+            <div class="ability-desc">A passive bioelectric emission that maps all energy signatures within an extended radius. Detects controlled kaiju, dimensional anomalies, and foreign presences before any visual contact. Always active.</div>
+          </div>
+          <div class="ability-card unique">
+            <div class="ability-name">Sekhmet's Brand</div>
+            <div class="ability-desc">When she strikes with deliberate judgment — not general combat — she imprints a white atomic mark on the point of impact. It burns from within, cannot be regenerated while active, and fades only by her will or the target's neutralization.</div>
+          </div>
+          <div class="ability-card unique">
+            <div class="ability-name">Liberation Roar</div>
+            <div class="ability-desc">A low-frequency emission that interferes with Xilien neural-control signals. At close range, it can partially or fully sever alien control over a kaiju. Costs significant energy. Initially involuntary — now consciously triggered.</div>
+          </div>
+          <div class="ability-card unique">
+            <div class="ability-name">Solar Convergence</div>
+            <div class="ability-desc">An intermediate state below full Keizer. Dorsal plates illuminate gold-white; atomic breath condenses to a solar-heat focal point. Fully under her control, unlike the Keizer state. Activated by sustained combat pressure.</div>
+          </div>
+          <div class="ability-card unique">
+            <div class="ability-name">Apex Stillness</div>
+            <div class="ability-desc">Complete metabolic suppression during voluntary stillness. Thermal, bioelectric, and atomic signatures approach zero, rendering her invisible to standard detection systems. The lioness before the strike.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHOBIAS -->
+      <div class="block">
+        <div class="block-title">Phobias</div>
+        <div class="warning-block">
+          <div class="warning-title">Pathological Cryophobia</div>
+          <div class="prose" style="font-size:12px;">Fear of total immobilization — not cold itself, but confinement that removes agency. Rooted in the cryostasis imprisonment. When triggered, cold calculation gives way to total and immediate action. Her greatest tactical vulnerability.</div>
+        </div>
+        <div class="warning-block" style="margin-bottom:0;">
+          <div class="warning-title">Fear of Inner Silence</div>
+          <div class="prose" style="font-size:12px;">Deep-seated and subconscious — unknown to herself. The terror of erasure, of having existed without leaving a trace. Manifests as a compulsive need to mark the world: liberated kaiju, territorial burns, Sekhmet's Brand. Every mark is proof that she is still here.</div>
+        </div>
+      </div>
+
+      <!-- HOBBIES -->
+      <div class="block">
+        <div class="block-title">Behavioral Tendencies</div>
+        <p class="prose" style="margin-bottom:12px;">Outside of active combat, Skehmet keeps to herself in ways that are consistent with her nature rather than chosen for comfort.</p>
+        <div class="stat-row"><span class="stat-key">Ocean Reading</span><span class="stat-val">Studies thermal currents, flux patterns, anomalies</span></div>
+        <div class="stat-row"><span class="stat-key">Combat Observation</span><span class="stat-val">Watches fights silently — absorbs patterns without intervening</span></div>
+        <div class="stat-row"><span class="stat-key">Territorial Ritual</span><span class="stat-val">Marks deep fault lines with dormant atomic burns</span></div>
+        <p class="prose" style="margin-top:10px;font-size:12px;">Several ancient Sekhmet temple glyphs are believed by AKRD researchers to be early human records of encounters with her territorial markings, misread as divine intervention.</p>
+      </div>
+
+      <!-- ENCOUNTER LOG -->
+      <div class="block block-full">
+        <div class="block-title">Confirmed Encounter Log</div>
+        <div class="encounter">
+          <span class="enc-num">01</span>
+          <div class="prose" style="font-size:12px;">Supersonic winged Kaiju Girl neutralized over a coastal sector. Tactics: tail strike to break momentum, followed by a single precision atomic discharge. Engagement duration: under ninety seconds. No collateral urban damage recorded.</div>
+        </div>
+        <div class="encounter">
+          <span class="enc-num">04</span>
+          <div class="prose" style="font-size:12px;">Arachnid-type kaiju immobilized in a port city. A targeted thermal pulse was used to selectively disable limb coordination without triggering structural collapse of surrounding infrastructure — a level of precision that was not expected at this scale.</div>
+        </div>
+        <div class="encounter">
+          <span class="enc-num">FW</span>
+          <div class="prose" style="font-size:12px;">Final confrontation: alien-augmented multi-headed Kaiju Girl. Skehmet sustained critical damage and was pushed to her limit before human insurgents transmitted an external energy surge. The Keizer-analog state activated. Target was eliminated. The insurgents were registered — not acknowledged verbally. But they were remembered.</div>
+        </div>
+      </div>
+
+      <!-- CONTAINMENT -->
+      <div class="block block-full">
+        <div class="block-title">Containment Status & AKRD Recommendations</div>
+        <p class="prose">Skehmet is currently believed to have returned to deep-ocean thermal fields following the events of 20XX. No active pursuit is recommended. Re-containment attempts would require resources and coordination beyond current international consensus, and prior containment was achieved only once — under exceptional tactical conditions that are unlikely to repeat.</p>
+        <p class="prose" style="margin-top:10px;">Current policy: observation only. Priority research targets are the precise trigger mechanism for the Keizer-analog state, the biological basis of her Xilien immunity, and tissue sample acquisition — which remains classified as a priority under extreme ethical and tactical constraints.</p>
+      </div>
+
+    </div>
+
+    <div class="glow-line"></div>
+    <div class="footer">
+      Aegis Kaiju Research Directorate &nbsp;·&nbsp; Classification: Confidential &nbsp;·&nbsp; Millennium Continuity
+      <div class="akrd-stamp">AKRD — KG — 0017</div>
+    </div>
+
+  </div><!-- /lang-en -->
+
+  <!-- ════════════════ PORTUGUÊS ════════════════ -->
+  <div class="lang-content" id="lang-pt">
+
+    <div class="header">
+      <div class="era-tag">AKRD — Perfil Kaiju Girl — Continuidade Millennium</div>
+      <div class="main-title">SKEHMET</div>
+      <div class="subtitle">A Leoa do Sol &nbsp;·&nbsp; Kaiju Girl de Godzilla Final Wars</div>
+      <div class="header-divider"></div>
+    </div>
+
+    <div class="classification-bar">
+      <div class="class-item"><span class="class-label">ID de Campo</span><span class="class-value">AKRD-KG-0017</span></div>
+      <div class="class-item"><span class="class-label">Altura</span><span class="class-value">90–110 M</span></div>
+      <div class="class-item"><span class="class-label">Massa</span><span class="class-value">~60.000 T</span></div>
+      <div class="class-item"><span class="class-label">Nível de Ameaça</span><span class="class-value threat-red">VERMELHO — ALTO</span></div>
+      <div class="class-item"><span class="class-label">Status</span><span class="class-value">NÃO CONTIDA</span></div>
+    </div>
+
+    <div class="main-grid">
+
+      <div class="block">
+        <div class="block-title">Biologia & Morfologia</div>
+        <div class="stat-row"><span class="stat-key">Origem</span><span class="stat-val">Fontes termais oceânicas profundas, era pré-humana</span></div>
+        <div class="stat-row"><span class="stat-key">Primeiro Despertar</span><span class="stat-val">1954 — ressonância de testes nucleares</span></div>
+        <div class="stat-row"><span class="stat-key">Contenção</span><span class="stat-val">Área G, Antártica (196X – 20XX)</span></div>
+        <div class="stat-row"><span class="stat-key">Placas Dorsais</span><span class="stat-val">Branco-acinzentadas, irregulares — tipo Final Wars</span></div>
+        <div class="stat-row"><span class="stat-key">Cauda</span><span class="stat-val">Negra, espinhada — arma principal</span></div>
+        <div class="stat-row"><span class="stat-key">Olhos</span><span class="stat-val">Âmbar-dourado, alta intensidade</span></div>
+        <div class="stat-row"><span class="stat-key">Marcas Faciais</span><span class="stat-val">Pintura ritual azul de guerra</span></div>
+        <div class="stat-row"><span class="stat-key">Controle Alienígena</span><span class="stat-val">IMUNE — compatibilidade Xiliana zero</span></div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">Físico</div>
+        <div class="stat-row"><span class="stat-key">Constituição</span><span class="stat-val">Atlética pesada — força e resistência</span></div>
+        <div class="stat-row"><span class="stat-key">Abdominais</span><span class="stat-val">8 blocos, profundamente definidos</span></div>
+        <div class="stat-row"><span class="stat-key">Grupos Musculares</span><span class="stat-val">Core, ombros, braços superiores, coxas</span></div>
+        <div class="stat-row"><span class="stat-key">Silhueta</span><span class="stat-val">Ampulheta sobre musculatura pesada</span></div>
+        <div class="stat-row"><span class="stat-key">Referência</span><span class="stat-val">Proporções Tifa Lockhart / físico Erza Scarlet</span></div>
+        <div class="stat-row"><span class="stat-key">Vestimenta</span><span class="stat-val">Armadura cerimonial egípcia — ouro sólido</span></div>
+        <div class="stat-row"><span class="stat-key">Presa</span><span class="stat-val">Única presa inferior, visível em repouso</span></div>
+      </div>
+
+      <div class="block block-full">
+        <div class="block-title">Personalidade</div>
+        <div class="tag-cloud">
+          <span class="tag">Soberana</span><span class="tag">Ma'at — Ordem</span><span class="tag">Natureza Dual</span><span class="tag">Agressividade Comprimida</span><span class="tag">Frieza Estratégica</span><span class="tag">Rancor Ancestral</span><span class="tag">Capaz de Perdoar</span>
+        </div>
+        <p class="prose">Skehmet não age por crueldade, medo ou orgulho. Ela age porque <em>concluiu</em>. Antes de golpear, ela observa. Antes de falar, ela pondera. Sua soberania não é um título — é um sistema de lógica que ela aplica a tudo ao seu redor, dividindo o mundo entre o que perturba a ordem natural e o que a restaura. Ela não explica seus julgamentos. Eles simplesmente chegam.</p>
+        <p class="prose">Sob a frieza exterior vivem duas forças em equilíbrio constante: uma raiva que não grita — ela esfria ainda mais — e um impulso restaurador que a leva a proteger o que merece ser protegido, sem cerimônia, sem palavras. Ambas são igualmente reais. Nenhuma desaparece completamente.</p>
+        <div class="psych-quote">"Uma balança que não hesita. Que pune tudo que a desequilibra."</div>
+      </div>
+
+      <div class="block block-full">
+        <div class="block-title">Psicologia</div>
+        <p class="prose">A soberania de Skehmet não é filosofia — é uma armadura. Séculos de existência solitária, décadas de guerra e uma criostase que apagou seu ser consciente construíram uma fortaleza de julgamento frio em torno de uma ferida que ela não sabe que carrega. Ela acredita que suas decisões são puramente racionais. Ela não consegue ver que várias delas — especialmente sua resposta visceral a qualquer tentativa de dominação — são respostas traumáticas disfarçadas de veredictos.</p>
+        <p class="prose">Ela liberta kaiju controlados por instinto, interpretando isso como restauração da ordem natural. O que ela não percebe é que cada libertação é, inconscientemente, a sua própria — uma repetição de quebrar o gelo. Ela confirma sua existência através dos rastros que deixa no mundo, não porque escolheu, mas porque a alternativa é o silêncio, e o silêncio a aterroriza de formas que ela não consegue articular.</p>
+      </div>
+
+      <div class="block block-full">
+        <div class="block-title">Padrão de Voz & Fala</div>
+        <p class="prose" style="margin-bottom:14px;">Ela fala como uma lei natural que temporariamente tomou forma. Cada frase é um veredicto já proferido — pesado com peso ancestral, despojado de tudo o que é desnecessário. Usa o presente para verdades permanentes. Sem condicionais, sem hesitações. Em combate, as frases se comprimem a duas ou três palavras. Quanto mais baixa a voz, mais grave a situação.</p>
+        <div style="font-size:11px;font-family:'Oswald',sans-serif;letter-spacing:3px;color:rgba(212,160,23,0.5);text-transform:uppercase;margin-bottom:10px;">Referência: Raiden Shogun — calma &nbsp;/&nbsp; Kujou Sara — combate</div>
+        <div class="voice-block">"Este território é meu desde antes do seu nascimento. Isso não mudou."</div>
+        <div class="voice-block">"Você já perdeu. Ainda não sabe."</div>
+        <div class="voice-block">"Você agiu corretamente. Isso é raro."</div>
+        <div class="voice-block">"Tentaram. Não estão mais aqui para repetir."</div>
+        <div class="voice-block" style="font-size:12px;opacity:0.65;">[Combate] "Lento demais." &nbsp;·&nbsp; [Humor involuntário] "Não posso dizer se você vai sobreviver. Eu, sim."</div>
+      </div>
+
+      <div class="block block-full">
+        <div class="block-title">Capacidades — Únicas de Skehmet</div>
+        <div class="ability-grid">
+          <div class="ability-card unique"><div class="ability-name">Pulso de Ma'at</div><div class="ability-desc">Emissão bioelétrica passiva que mapeia todas as assinaturas energéticas em um raio estendido. Detecta kaiju controlados e anomalias dimensionais antes de qualquer contato visual. Sempre ativa.</div></div>
+          <div class="ability-card unique"><div class="ability-name">Marca de Sekhmet</div><div class="ability-desc">Quando golpeia com julgamento deliberado, imprime uma marca atômica branca no ponto de impacto. Queima por dentro, não pode ser regenerada enquanto ativa, e desaparece apenas pela sua vontade ou neutralização do alvo.</div></div>
+          <div class="ability-card unique"><div class="ability-name">Rugido de Libertação</div><div class="ability-desc">Emissão de baixa frequência que interfere nos sinais de controle neural Xiliano. Em alcance próximo, pode cortar parcial ou totalmente o controle alienígena sobre um kaiju. Inicialmente involuntário — agora conscientemente ativado.</div></div>
+          <div class="ability-card unique"><div class="ability-name">Convergência Solar</div><div class="ability-desc">Estado intermediário abaixo do Keizer completo. Placas dorsais iluminam ouro-branco; sopro atômico condensa em ponto focal de calor solar. Totalmente sob seu controle, ao contrário do estado Keizer.</div></div>
+          <div class="ability-card unique"><div class="ability-name">Imobilidade Apex</div><div class="ability-desc">Supressão metabólica completa durante imobilidade voluntária. Assinaturas térmicas, bioelétrica e atômica próximas de zero — invisível para sistemas de detecção padrão. A leoa antes do salto.</div></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">Fobias</div>
+        <div class="warning-block">
+          <div class="warning-title">Criofobia Patológica</div>
+          <div class="prose" style="font-size:12px;">Medo de imobilização total — não o frio em si, mas o confinamento que remove a agência. Enraizado na prisão criogênica. Quando ativado, o cálculo frio cede lugar a ação total e imediata.</div>
+        </div>
+        <div class="warning-block" style="margin-bottom:0;">
+          <div class="warning-title">Medo do Silêncio Interior</div>
+          <div class="prose" style="font-size:12px;">Profundo e subconsciente — desconhecido por ela mesma. O terror do apagamento, de ter existido sem deixar rastro. Manifesta-se como necessidade compulsiva de marcar o mundo. Cada marca é a prova de que ela ainda existe.</div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">Tendências Comportamentais</div>
+        <div class="stat-row"><span class="stat-key">Leitura Oceânica</span><span class="stat-val">Estuda correntes termais, fluxos e anomalias</span></div>
+        <div class="stat-row"><span class="stat-key">Observação de Combate</span><span class="stat-val">Assiste lutas em silêncio — absorve padrões</span></div>
+        <div class="stat-row"><span class="stat-key">Ritual Territorial</span><span class="stat-val">Marca falhas submarinas com queimaduras atômicas dormentes</span></div>
+      </div>
+
+    </div>
+
+    <div class="glow-line"></div>
+    <div class="footer">
+      Diretoria de Pesquisa Kaiju Aegis &nbsp;·&nbsp; Classificação: Confidencial &nbsp;·&nbsp; Continuidade Millennium
+      <div class="akrd-stamp">AKRD — KG — 0017</div>
+    </div>
+
+  </div><!-- /lang-pt -->
+
+  <!-- ════════════════ ESPAÑOL ════════════════ -->
+  <div class="lang-content" id="lang-es">
+
+    <div class="header">
+      <div class="era-tag">AKRD — Perfil Kaiju Girl — Continuidad Millennium</div>
+      <div class="main-title">SKEHMET</div>
+      <div class="subtitle">La Leona del Sol &nbsp;·&nbsp; Kaiju Girl de Godzilla Final Wars</div>
+      <div class="header-divider"></div>
+    </div>
+
+    <div class="classification-bar">
+      <div class="class-item"><span class="class-label">ID de Campo</span><span class="class-value">AKRD-KG-0017</span></div>
+      <div class="class-item"><span class="class-label">Altura</span><span class="class-value">90–110 M</span></div>
+      <div class="class-item"><span class="class-label">Masa</span><span class="class-value">~60.000 T</span></div>
+      <div class="class-item"><span class="class-label">Nivel de Amenaza</span><span class="class-value threat-red">ROJO — ALTO</span></div>
+      <div class="class-item"><span class="class-label">Estado</span><span class="class-value">NO CONTENIDA</span></div>
+    </div>
+
+    <div class="main-grid">
+
+      <div class="block">
+        <div class="block-title">Biología & Morfología</div>
+        <div class="stat-row"><span class="stat-key">Origen</span><span class="stat-val">Fuentes termales oceánicas profundas, era pre-humana</span></div>
+        <div class="stat-row"><span class="stat-key">Primer Despertar</span><span class="stat-val">1954 — resonancia de pruebas nucleares</span></div>
+        <div class="stat-row"><span class="stat-key">Contención</span><span class="stat-val">Área G, Antártida (196X – 20XX)</span></div>
+        <div class="stat-row"><span class="stat-key">Placas Dorsales</span><span class="stat-val">Blanco-grisáceas, irregulares — tipo Final Wars</span></div>
+        <div class="stat-row"><span class="stat-key">Cola</span><span class="stat-val">Negra, espinosa — arma principal</span></div>
+        <div class="stat-row"><span class="stat-key">Ojos</span><span class="stat-val">Ámbar-dorado, alta intensidad</span></div>
+        <div class="stat-row"><span class="stat-key">Marcas Faciales</span><span class="stat-val">Pintura ritual azul de guerra</span></div>
+        <div class="stat-row"><span class="stat-key">Control Alienígena</span><span class="stat-val">INMUNE — compatibilidad Xiliana cero</span></div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">Físico</div>
+        <div class="stat-row"><span class="stat-key">Constitución</span><span class="stat-val">Atlética pesada — fuerza y resistencia</span></div>
+        <div class="stat-row"><span class="stat-key">Abdominales</span><span class="stat-val">8 bloques, profundamente definidos</span></div>
+        <div class="stat-row"><span class="stat-key">Grupos Musculares</span><span class="stat-val">Core, hombros, brazos superiores, muslos</span></div>
+        <div class="stat-row"><span class="stat-key">Silueta</span><span class="stat-val">Reloj de arena sobre musculatura pesada</span></div>
+        <div class="stat-row"><span class="stat-key">Referencia</span><span class="stat-val">Proporciones Tifa Lockhart / constitución Erza Scarlet</span></div>
+        <div class="stat-row"><span class="stat-key">Vestimenta</span><span class="stat-val">Armadura ceremonial egipcia — oro sólido</span></div>
+        <div class="stat-row"><span class="stat-key">Colmillo</span><span class="stat-val">Único colmillo inferior, visible en reposo</span></div>
+      </div>
+
+      <div class="block block-full">
+        <div class="block-title">Personalidad</div>
+        <div class="tag-cloud">
+          <span class="tag">Soberana</span><span class="tag">Ma'at — Orden</span><span class="tag">Naturaleza Dual</span><span class="tag">Agresividad Comprimida</span><span class="tag">Frialdad Estratégica</span><span class="tag">Rencor Ancestral</span><span class="tag">Capaz de Perdonar</span>
+        </div>
+        <p class="prose">Skehmet no actúa por crueldad, miedo ni orgullo. Actúa porque ha <em>concluido</em>. Antes de golpear, observa. Antes de hablar, sopesa. Su soberanía no es un título — es un sistema lógico que aplica a todo lo que la rodea, dividiendo el mundo entre lo que perturba el orden natural y lo que lo restaura. No explica sus juicios. Simplemente llegan.</p>
+        <p class="prose">Bajo la frialdad exterior viven dos fuerzas en equilibrio constante: una rabia que no grita — se vuelve aún más fría — y un impulso restaurador que la lleva a proteger lo que merece ser protegido, sin ceremonia, sin palabras. Ambas son igualmente reales. Ninguna desaparece completamente.</p>
+        <div class="psych-quote">"Una balanza que no duda. Que castiga todo lo que la desequilibra."</div>
+      </div>
+
+      <div class="block block-full">
+        <div class="block-title">Psicología</div>
+        <p class="prose">La soberanía de Skehmet no es filosofía — es una armadura. Siglos de existencia solitaria, décadas de guerra y una criostasis que borró su ser consciente han construido una fortaleza de juicio frío alrededor de una herida que ella no sabe que carga. Cree que sus decisiones son puramente racionales. No puede ver que varias de ellas — especialmente su respuesta visceral a cualquier intento de dominación — son respuestas traumáticas disfrazadas de veredictos.</p>
+        <p class="prose">Libera kaiju controlados por instinto, interpretándolo como restauración del orden natural. Lo que no percibe es que cada liberación es, inconscientemente, la suya propia — una repetición de romper el hielo. Confirma su existencia a través de los rastros que deja en el mundo, no porque lo haya elegido, sino porque la alternativa es el silencio, y el silencio la aterra de maneras que no puede articular.</p>
+      </div>
+
+      <div class="block block-full">
+        <div class="block-title">Patrón de Voz & Habla</div>
+        <p class="prose" style="margin-bottom:14px;">Habla como una ley natural que temporalmente ha tomado forma. Cada frase es un veredicto ya emitido — pesado con peso ancestral, despojado de todo lo innecesario. Usa el presente para verdades permanentes. Sin condicionales, sin rodeos. En combate, las frases se comprimen a dos o tres palabras. Cuanto más baja la voz, más grave la situación.</p>
+        <div style="font-size:11px;font-family:'Oswald',sans-serif;letter-spacing:3px;color:rgba(212,160,23,0.5);text-transform:uppercase;margin-bottom:10px;">Referencia: Raiden Shogun — calma &nbsp;/&nbsp; Kujou Sara — combate</div>
+        <div class="voice-block">"Este territorio es mío desde antes de tu nacimiento. Eso no ha cambiado."</div>
+        <div class="voice-block">"Ya perdiste. Todavía no lo sabes."</div>
+        <div class="voice-block">"Actuaste correctamente. Eso es raro."</div>
+        <div class="voice-block">"Lo intentaron. Ya no están para repetirlo."</div>
+        <div class="voice-block" style="font-size:12px;opacity:0.65;">[Combate] "Demasiado lento." &nbsp;·&nbsp; [Humor involuntario] "No puedo decir si tú sobrevivirás. Yo, sí."</div>
+      </div>
+
+      <div class="block block-full">
+        <div class="block-title">Capacidades — Únicas de Skehmet</div>
+        <div class="ability-grid">
+          <div class="ability-card unique"><div class="ability-name">Pulso de Ma'at</div><div class="ability-desc">Emisión bioeléctrica pasiva que mapea todas las firmas energéticas en un radio extendido. Detecta kaiju controlados y anomalías dimensionales antes de cualquier contacto visual. Siempre activa.</div></div>
+          <div class="ability-card unique"><div class="ability-name">Marca de Sekhmet</div><div class="ability-desc">Cuando golpea con juicio deliberado, imprime una marca atómica blanca en el punto de impacto. Arde desde adentro, no puede regenerarse mientras está activa, y desaparece solo por su voluntad o la neutralización del objetivo.</div></div>
+          <div class="ability-card unique"><div class="ability-name">Rugido de Liberación</div><div class="ability-desc">Emisión de baja frecuencia que interfiere con las señales de control neural Xiliano. En rango cercano, puede cortar parcial o totalmente el control alienígena sobre un kaiju. Inicialmente involuntario — ahora conscientemente activado.</div></div>
+          <div class="ability-card unique"><div class="ability-name">Convergencia Solar</div><div class="ability-desc">Estado intermedio por debajo del Keizer completo. Las placas dorsales iluminan dorado-blanco; el aliento atómico se condensa en un punto focal de calor solar. Totalmente bajo su control, a diferencia del estado Keizer.</div></div>
+          <div class="ability-card unique"><div class="ability-name">Quietud Apex</div><div class="ability-desc">Supresión metabólica completa durante la inmovilidad voluntaria. Firmas térmicas, bioeléctricas y atómicas próximas a cero — invisible para sistemas de detección estándar. La leona antes del salto.</div></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">Fobias</div>
+        <div class="warning-block">
+          <div class="warning-title">Criofobia Patológica</div>
+          <div class="prose" style="font-size:12px;">Miedo a la inmovilización total — no al frío en sí, sino al confinamiento que elimina la agencia. Arraigado en el encarcelamiento criogénico. Cuando se activa, el cálculo frío cede a una acción total e inmediata.</div>
+        </div>
+        <div class="warning-block" style="margin-bottom:0;">
+          <div class="warning-title">Miedo al Silencio Interior</div>
+          <div class="prose" style="font-size:12px;">Profundo y subconsciente — desconocido para ella misma. El terror al borrado, a haber existido sin dejar huella. Se manifiesta como necesidad compulsiva de marcar el mundo. Cada marca es la prueba de que aún existe.</div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">Tendencias Conductuales</div>
+        <div class="stat-row"><span class="stat-key">Lectura Oceánica</span><span class="stat-val">Estudia corrientes termales, flujos y anomalías</span></div>
+        <div class="stat-row"><span class="stat-key">Observación de Combate</span><span class="stat-val">Observa peleas en silencio — absorbe patrones</span></div>
+        <div class="stat-row"><span class="stat-key">Ritual Territorial</span><span class="stat-val">Marca fallas submarinas con quemaduras atómicas latentes</span></div>
+      </div>
+
+    </div>
+
+    <div class="glow-line"></div>
+    <div class="footer">
+      Directorado de Investigación Kaiju Aegis &nbsp;·&nbsp; Clasificación: Confidencial &nbsp;·&nbsp; Continuidad Millennium
+      <div class="akrd-stamp">AKRD — KG — 0017</div>
+    </div>
+
+  </div><!-- /lang-es -->
+
+</div>
+
+<script>
+function switchLang(lang, btn) {
+  document.querySelectorAll('.lang-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.lang-tab').forEach(el => el.classList.remove('active'));
+  document.getElementById('lang-' + lang).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
